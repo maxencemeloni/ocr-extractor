@@ -3,16 +3,20 @@ import express from 'express';
 import cors from 'cors';
 import morgan from 'morgan';
 import bodyParser from 'body-parser';
+//import helmet from 'helmet;'
 import initializeDb from './db';
 import middleware from './middleware';
 import api from './api';
 import config from './config.json';
-
 let app = express();
-if (process.env.NODE_ENV === 'development') {
+console.log();
+if (process.env.npm_lifecycle_event === 'dev') {
     require('expressjs-api-explorer')(app,express);
 }
 app.server = http.createServer(app);
+
+// security
+//app.use(helmet);
 
 // logger
 app.use(morgan('dev'));
