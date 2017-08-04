@@ -9,6 +9,9 @@ import api from './api';
 import config from './config.json';
 
 let app = express();
+if (process.env.NODE_ENV === 'development') {
+    require('expressjs-api-explorer')(app,express);
+}
 app.server = http.createServer(app);
 
 // logger
