@@ -24,11 +24,8 @@ class OCRExtractor {
     }
 
     tesseract(next) {
-        let options = {
-            psm: 6,
-            binary: '/usr/bin/tessereact'
-        };
-        tesseract.process(this.file, options, (err, text) => {
+
+        tesseract.process(this.file, (err, text) => {
             log.info(text);
             next(err, text);
         });
