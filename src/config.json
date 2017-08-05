@@ -6,6 +6,9 @@
     "allowedTypes": ["base64"],
     "maxSize": "15mo"
   },
+  "ocr": {
+
+  },
   "corsHeaders": [
     "Link"
   ],

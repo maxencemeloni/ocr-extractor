@@ -1,9 +1,10 @@
 import async from 'async';
 import log from 'winston';
 import tesseract from 'node-tesseract';
+import nodecr from 'nodecr';
 
 class OCRExtractor {
-    constructor(config, file) {
+    constructor(file, config) {
         this.config = config;
         this.file = file;
     }
@@ -24,11 +25,10 @@ class OCRExtractor {
     }
 
     tesseract(next) {
-        tesseract.process(this.file, (err, text) => {
-            console.log(err);
+        nodecr.process(__dirname + this.file,function(err, text) {
             log.info(text);
             next(err, text);
-        });
+        }, null, 6);
     }
 
     static mySecondFunction(arg1, arg2, next) {

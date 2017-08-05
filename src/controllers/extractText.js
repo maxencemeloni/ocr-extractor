@@ -6,17 +6,15 @@ import { writeFile } from '../lib/write-file.js';
 
 let controller = {};
 controller.extract = (req, next) => {
-    writeFile(req, config, (err, filePath) => {
+    writeFile(req, config.upload, (err, filePath) => {
         if (err !== null) {
             log.error(`[CONTROLLER][extractText.extract] ${err}`);
             next(err, null);
         } else {
-            let ocr = new OCRExtractor(filePath, config);
+            let ocr = new OCRExtractor(filePath, config.ocr);
             ocr.extract(next);
         }
     });
 };
 
 export default controller;
-
-//module.exports = controller;
