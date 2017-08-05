@@ -1,0 +1,31 @@
+{
+  "test": [
+    {"description": "get test",
+      "method": "GET",
+      "controller": "test",
+      "args": "",
+      "active": true
+    },
+    {"description": "get test:id",
+      "method": "GET",
+      "controller": "test",
+      "args": "/:id",
+      "active": true
+    },
+    {"description": "post test",
+      "method": "POST",
+      "controller": "test",
+      "args": "",
+      "active": true
+    }
+  ],
+  "extractText" : [
+    {
+      "description": "Image(s) uploading for Text extraction",
+      "method": "FILES",
+      "controller": "extractText",
+      "args": "",
+      "active": true
+    }
+  ]
+}

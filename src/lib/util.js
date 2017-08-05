@@ -1,3 +1,5 @@
+import crypto from 'crypto';
+import md5 from 'md5';
 
 /**	Creates a callback that proxies node callback style arguments to an Express Response object.
  *	@param {express.Response} res	Express HTTP Response
@@ -17,4 +19,10 @@ export function toRes(res, status=200) {
 		}
 		res.status(status).json(thing);
 	};
+}
+
+export function generateRandomHash() {
+    return md5(crypto.randomBytes(Math.ceil(32/2))
+            .toString('hex') // convert to hexadecimal format
+            .slice(0,32).toUpperCase());   // return required number of characters
 }

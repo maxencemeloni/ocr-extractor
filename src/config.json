@@ -1,5 +1,20 @@
 {
-	"port": 8080,
-	"bodyLimit": "100kb",
-	"corsHeaders": ["Link"]
+  "port": 8080,
+  "bodyLimit": "100kb",
+  "upload": {
+    "path": "src/public/uploads",
+    "allowedTypes": ["base64"],
+    "maxSize": "15mo"
+  },
+  "corsHeaders": [
+    "Link"
+  ],
+  "helmet": {
+    "frameguard": {
+      "action": "deny"
+    }
+  },
+  "winston": {
+
+  }
 }

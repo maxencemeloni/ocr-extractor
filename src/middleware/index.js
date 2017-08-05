@@ -1,9 +1,9 @@
 import { Router } from 'express';
 
 export default ({ config, db }) => {
-	let routes = Router();
+	let api = Router();
 
 	// add middleware here
 
-	return routes;
+	return api;
 }
