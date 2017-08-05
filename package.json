@@ -37,6 +37,7 @@
     "fs": "0.0.1-security",
     "helmet": "^3.8.1",
     "md5": "^2.2.1",
+    "mkdir": "0.0.2",
     "morgan": "^1.8.0",
     "morgan-json": "^1.1.0",
     "node-tesseract": "^0.2.7",

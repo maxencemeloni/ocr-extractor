@@ -10,6 +10,7 @@ import api from './api';
 import config from './config.json';
 import winston from 'winston';
 import path from 'path';
+import mkdir from 'mkdir';
 
 let app = express();
 if (app.settings.env === 'development') {
@@ -20,6 +21,8 @@ if (app.settings.env === 'development') {
     app.use(helmet(config.helmet));
 }
 
+// create tmp dir
+mkdir('../tmp');
 
 winston.info('*******************************************************');
 winston.info('************* STARTING OCR EXTRACTOR API **************');
