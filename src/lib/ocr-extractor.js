@@ -10,9 +10,11 @@ class OCRExtractor {
     }
 
     extract(next) {
+        console.log('---------- OCR Extraction start');
+        let extracts = [];
         async.waterfall([
             () => {
-            this.tesseract(next);
+            this.tesseract(extracts, next);
             },
             OCRExtractor.mySecondFunction,
             OCRExtractor.myLastFunction,
@@ -24,9 +26,17 @@ class OCRExtractor {
         });
     }
 
-    tesseract(next) {
+    tesseract(extracts, next) {
         nodecr.process(this.file,function(err, text) {
-            log.info(text);
+            log.info('[OCR][TESSERACT] Result : ');
+            if (err !== null) {
+                log.info('Error :');
+                log.info(err);
+            } else {
+                log.info('Success :');
+                log.info(text);
+            }
+            extracts.tesseract = text;
             next(err, text);
         }, null, 6);
     }
