@@ -19,9 +19,12 @@ class OCRExtractor {
                 },
                 tesseractjs: (callback) => {
                     this.tesseractjs(callback);
+                },
+                ocrapiservice: (callback) => {
+                    this.ocrapiservice(callback);
                 }
             },
-            2,
+            4,
             (err, results) => {
                 if (err !== null) {
                     log.error(`[OCRExtractor.extract] ${err}`);
@@ -69,9 +72,17 @@ class OCRExtractor {
     }
 
     ocrapiservice(next) {
+        log.info('[OCR][ocrapiservice] Result : ');
         let settings = config.ocrapiservice;
         settings.files = this.file;
         httpClient(settings, (err, res, body) => {
+            if (err !== null) {
+                log.info('[OCR][tesseract] Error :');
+                log.info(err);
+            } else {
+                log.info('[OCR][tesseract] Success :');
+                log.info(body);
+            }
             console.log(body);
             next(err, body);
         });
