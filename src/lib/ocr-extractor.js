@@ -7,17 +7,17 @@ class OCRExtractor {
     constructor(file, config) {
         this.config = config;
         this.file = file;
+        this.extracts = {};
     }
 
     extract(next) {
         console.log('---------- OCR Extraction start');
-        let extracts = [];
         async.parallel({
             tesseract: (callback) => {
-                this.tesseract(extracts, callback);
+                this.tesseract(callback);
             },
             ocr: (callback) => {
-                this.ocr(extracts, callback);
+                this.ocr(callback);
             }
         }, (err, results) => {
             if (err !== null) {
@@ -27,7 +27,7 @@ class OCRExtractor {
         });
     }
 
-    tesseract(extracts, next) {
+    tesseract(next) {
         nodecr.process(this.file, function(error, text) {
             log.info('[OCR][TESSERACT] Result : ');
             if (error !== null) {
@@ -38,12 +38,11 @@ class OCRExtractor {
                 log.info('Success :');
                 log.info(text);
             }
-            extracts.tesseract = {text, error};
-            next(null, extracts);
+            next(null, {text, error});
         }, null, 6);
     }
 
-    ocr(extracts, next) {
+    ocr(next) {
         nodecr.process(this.file, function(error, text) {
             log.info('[OCR][OCR] Result : ');
             if (error !== null) {
@@ -54,8 +53,7 @@ class OCRExtractor {
                 log.info('Success :');
                 log.info(text);
             }
-            extracts.tesseract = {text, error};
-            next(null, extracts);
+            next(null, {text, error});
         }, null, 6);
     }
 }
