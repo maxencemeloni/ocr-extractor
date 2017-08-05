@@ -2,7 +2,8 @@
   "apps": [
     {
       "name": "ocr-extractor-api",
-      "script": "npm --start",
+      "script": "npm",
+      "args" : "start",
       "instances": 2,
       "exec_mode": "cluster",
       "env": {
