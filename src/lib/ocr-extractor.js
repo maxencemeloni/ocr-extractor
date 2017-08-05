@@ -25,7 +25,7 @@ class OCRExtractor {
     }
 
     tesseract(next) {
-        nodecr.process(__dirname + this.file,function(err, text) {
+        nodecr.process(this.file,function(err, text) {
             log.info(text);
             next(err, text);
         }, null, 6);
