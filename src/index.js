@@ -10,7 +10,7 @@ import api from './api';
 import config from './config.json';
 import winston from 'winston';
 import path from 'path';
-import mkdir from 'mkdir';
+import { mkdirsSync } from 'mkdir';
 
 let app = express();
 if (app.settings.env === 'development') {
@@ -22,7 +22,7 @@ if (app.settings.env === 'development') {
 }
 
 // create tmp dir
-mkdir('../tmp');
+mkdirsSync('../tmp');
 
 winston.info('*******************************************************');
 winston.info('************* STARTING OCR EXTRACTOR API **************');
