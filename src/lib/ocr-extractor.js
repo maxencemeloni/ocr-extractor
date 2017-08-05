@@ -12,43 +12,51 @@ class OCRExtractor {
     extract(next) {
         console.log('---------- OCR Extraction start');
         let extracts = [];
-        async.waterfall([
-            () => {
-            this.tesseract(extracts, next);
+        async.parallel({
+            tesseract: (callback) => {
+                this.tesseract(extracts, callback);
             },
-            OCRExtractor.mySecondFunction,
-            OCRExtractor.myLastFunction,
-        ], (err, result) => {
+            ocr: (callback) => {
+                this.ocr(extracts, callback);
+            }
+        }, (err, results) => {
             if (err !== null) {
                 log.error(`[OCRExtractor.extract] ${err}`);
             }
-            next(err, result);
+            next(err, results);
         });
     }
 
     tesseract(extracts, next) {
-        nodecr.process(this.file,function(err, text) {
+        nodecr.process(this.file, function(error, text) {
             log.info('[OCR][TESSERACT] Result : ');
-            if (err !== null) {
+            if (error !== null) {
                 log.info('Error :');
-                log.info(err);
+                log.info(error);
             } else {
+                text = text.trim();
                 log.info('Success :');
                 log.info(text);
             }
-            extracts.tesseract = text;
-            next(err, text);
+            extracts.tesseract = {text, error};
+            next(null, extracts);
         }, null, 6);
     }
 
-    static mySecondFunction(arg1, arg2, next) {
-        // arg1 now equals 'one' and arg2 now equals 'two'
-        next(null, 'three');
-    }
-
-    static myLastFunction(arg1, next) {
-        // arg1 now equals 'three'
-        next(null, 'done');
+    ocr(extracts, next) {
+        nodecr.process(this.file, function(error, text) {
+            log.info('[OCR][OCR] Result : ');
+            if (error !== null) {
+                log.info('Error :');
+                log.info(error);
+            } else {
+                text = text.trim();
+                log.info('Success :');
+                log.info(text);
+            }
+            extracts.tesseract = {text, error};
+            next(null, extracts);
+        }, null, 6);
     }
 }
 
