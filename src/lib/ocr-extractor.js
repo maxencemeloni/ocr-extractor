@@ -24,6 +24,8 @@ class OCRExtractor {
             (err, results) => {
                 if (err !== null) {
                     log.error(`[OCRExtractor.extract] ${err}`);
+                } else {
+                    log.info(results);
                 }
                 next(err, results);
             });
@@ -53,7 +55,6 @@ class OCRExtractor {
         log.info('[OCR][tesseractjs] Result : ');
         tesseractjs.recognize(this.file)
             .progress(function(p) {
-                console.log('progress', p);
             })
             .catch(err => {
                 log.info('Error :');
