@@ -1,0 +1,14 @@
+{
+  "apps": [
+    {
+      "name": "ocr-extractor-api",
+      "script": "./homepage/server.js",
+      "instances": 2,
+      "exec_mode": "cluster",
+      "env": {
+        "NODE_ENV": "production",
+        "PORT": "8080"
+      }
+    }
+  ]
+}
