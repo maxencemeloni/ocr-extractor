@@ -3,11 +3,12 @@
   "bodyLimit": "100kb",
   "upload": {
     "path": "src/public/uploads",
-    "allowedTypes": ["base64"],
+    "allowedTypes": [
+      "base64"
+    ],
     "maxSize": "15mo"
   },
   "ocr": {
-
   },
   "corsHeaders": [
     "Link"
@@ -18,6 +19,18 @@
     }
   },
   "winston": {
-
+  },
+  "ocrapiservice": {
+    "method": "IMAGES",
+    "url": "http://api.ocrapiservice.com/1.0/rest/ocr",
+    "body": {
+      "apikey": "744ZvPsmYn",
+      "language": "en"
+    },
+    "headers": {
+      "User-Agent": "ocr-extractor/",
+      "Accepts": "application/json",
+      "Content-type": "application/json"
+    }
   }
 }

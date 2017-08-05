@@ -11,7 +11,7 @@ controller.extract = (req, next) => {
             log.error(`[CONTROLLER][extractText.extract] ${err}`);
             next(err, null);
         } else {
-            let ocr = new OCRExtractor(filePath, config.ocr);
+            let ocr = new OCRExtractor(filePath);
             ocr.extract(next);
         }
     });

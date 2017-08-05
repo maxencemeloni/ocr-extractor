@@ -44,6 +44,7 @@
     "nodecr": "0.0.5",
     "path": "^0.12.7",
     "react-file-uploader": "^0.3.3",
+    "request": "^2.81.0",
     "resource-router-middleware": "^0.6.0",
     "tesseract.js": "^1.0.10",
     "winston": "^2.3.1"

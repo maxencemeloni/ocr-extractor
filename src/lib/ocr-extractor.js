@@ -2,10 +2,11 @@ import async from 'async';
 import log from 'winston';
 import tesseract from 'node-tesseract';
 import tesseractjs from 'tesseract.js';
+import {httpClient} from './http-client.js';
+import config from '../config.json';
 
 class OCRExtractor {
-    constructor(file, config) {
-        this.config = config;
+    constructor(file) {
         this.file = file;
         this.extracts = {};
     }
@@ -36,11 +37,11 @@ class OCRExtractor {
             tesseract.process(this.file, function(error, text) {
                 log.info('[OCR][tesseract] Result : ');
                 if (error !== null) {
-                    log.info('Error :');
+                    log.info('[OCR][tesseract] Error :');
                     log.info(error);
                 } else {
                     text = text.trim();
-                    log.info('Success :');
+                    log.info('[OCR][tesseract] Success :');
                     log.info(text);
                 }
                 next(null, {text, error});
@@ -54,19 +55,26 @@ class OCRExtractor {
     tesseractjs(next) {
         log.info('[OCR][tesseractjs] Result : ');
         tesseractjs.recognize(this.file)
-            .progress(function(p) {
-            })
-            .catch(err => {
-                log.info('Error :');
+            .catch((err) => {
+                log.info('[OCR][tesseractjs] Error :');
                 log.error(err);
                 next(err, {err});
             })
             .then(function(result) {
                 let text = result.text.trim();
-                log.info('Success :');
+                log.info('[OCR][tesseractjs] Success :');
                 log.info(text);
                 next(null, {text});
             });
+    }
+
+    ocrapiservice(next) {
+        let settings = config.ocrapiservice;
+        settings.files = this.file;
+        httpClient(settings, (err, res, body) => {
+            console.log(body);
+            next(err, body);
+        });
     }
 }
 
