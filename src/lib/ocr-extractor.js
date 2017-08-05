@@ -12,7 +12,7 @@ class OCRExtractor {
     }
 
     extract(next) {
-        console.log('---------- OCR Extraction start');
+        log.info('---------- OCR Extraction start');
         async.parallelLimit({
                 tesseract: (callback) => {
                     this.tesseract(callback);
@@ -24,10 +24,10 @@ class OCRExtractor {
                     this.ocrapiservice(callback);
                 }
             },
-            4,
+            2,
             (err, results) => {
                 if (err !== null) {
-                    log.error(`[OCRExtractor.extract] ${err}`);
+                    log.info(`[OCRExtractor.extract] ${err}`);
                 } else {
                     log.info(results);
                 }
@@ -56,35 +56,40 @@ class OCRExtractor {
     }
 
     tesseractjs(next) {
-        log.info('[OCR][tesseractjs] Result : ');
-        tesseractjs.recognize(this.file)
-            .catch((err) => {
-                log.info('[OCR][tesseractjs] Error :');
-                log.error(err);
-                next(err, {err});
-            })
-            .then(function(result) {
-                let text = result.text.trim();
-                log.info('[OCR][tesseractjs] Success :');
-                log.info(text);
-                next(null, {text});
-            });
+        if (process.env.OS !== 'Windows_NT') {
+            log.info('[OCR][tesseractjs] Result : ');
+            tesseractjs.recognize(this.file)
+                .catch((err) => {
+                    log.info('[OCR][tesseractjs] Error :');
+                    log.error(err);
+                    next(err, {err});
+                })
+                .then(function(result) {
+                    let text = result.text.trim();
+                    log.info('[OCR][tesseractjs] Success :');
+                    log.info(text);
+                    next(null, {text});
+                });
+        } else {
+            log.info('[OCR][tesseractjs] Skyped');
+            next(null, {});
+        }
     }
 
     ocrapiservice(next) {
         log.info('[OCR][ocrapiservice] Result : ');
         let settings = config.ocrapiservice;
         settings.files = this.file;
-        httpClient(settings, (err, res, body) => {
+        httpClient(settings, (err, res, text) => {
             if (err !== null) {
-                log.info('[OCR][tesseract] Error :');
+                log.info('[OCR][ocrapiservice] Error :');
                 log.info(err);
             } else {
-                log.info('[OCR][tesseract] Success :');
-                log.info(body);
+                text = text.trim();
+                log.info('[OCR][ocrapiservice] Success :');
+                log.info(text);
             }
-            console.log(body);
-            next(err, body);
+            next(err, {text, err});
         });
     }
 }
