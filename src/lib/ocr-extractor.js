@@ -24,8 +24,8 @@ class OCRExtractor {
     }
 
     tesseract(next) {
-
         tesseract.process(this.file, (err, text) => {
+            console.log(err);
             log.info(text);
             next(err, text);
         });
