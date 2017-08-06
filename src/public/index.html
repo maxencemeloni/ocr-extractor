@@ -1,46 +1,79 @@
 <html>
 <head>
     <title>OCR extractor API</title>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css"
+          integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js"
+            integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb"
+            crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js"
+            integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn"
+            crossorigin="anonymous"></script>
 </head>
 <body>
 <div style="margin:100px;">
-    <div class="jumbotron" style="padding:40px;">
+    <div class="jumbotron container" style="padding:40px;">
         <h1>OCR extractor API</h1>
-		<form id="upload">
-		    <label class="control-label">Select File</label>
-			<input id="image" type="file" class="file">
-			<button>Envoyer</button>
-		</form>
-		<pre id="result">
-		</pre>
+        <form method="post" action="" enctype="multipart/form-data" id="upload">
+            <div class="row">
+                <div class="col-md-6">
+                    <label class="control-label">Select File</label>
+                    <input id="image" name="image" type="file" class="file">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <button>Envoyer</button>
+                </div>
+            </div>
+        </form>
+        <div class="row">
+            <div class="col-md-12" id="result">
+                <progress id="progress" value="0" max="100"></progress>
+            </div>
+        </div>
+
     </div>
 </div>
 <script type="text/javascript">
-	$(document).ready(function(){
-		$('form#upload').on('submit', function(e){
-			e.preventDefault();
-			var formData = new FormData($(this)[0]);
-			$.ajax({
-				url: "http://37.59.49.118:8080/api/extractText",
-				type: 'POST',
-				data: formData,
-				processData: false,
-				contentType: false,
-				cache: false,
-				enctype: 'multipart/form-data',
-				async: false,
+    $(document).ready(function() {
+        $('form#upload').on('submit', function(e) {
+            e.preventDefault();
 
-			}).done(function( data ) {
-				$('pre#result').html(data);
-			}).fail(function(error) {
-				$('pre#result').html(error);
-			});
-		});
-	});
+            let formData = new FormData($('form')[0]);
+            $.ajax({
+                url: 'http://localhost:8080/api/extractText',
+                type: 'POST',
+                xhr: function() {
+                    let myXhr = $.ajaxSettings.xhr();
+                    if (myXhr.upload) {
+                        myXhr.upload.addEventListener('progress', showProgession, false);
+                    }
+                    return myXhr;
+                },
+                beforeSend: () => {
+                },
+                success: (result, msg) => {
+                    $('div#result').html(`<h2>${msg}</h2><pre>${JSON.stringify(result)}</pre>`);
+                },
+                error: (jqXhr, msg, err) => {
+                    $('div#result').html(`<h2>${msg}</h2><pre>${JSON.stringify(err)}</pre>`);
+                    console.error(jqXhr);
+                },
+                data: formData,
+                cache: false,
+                contentType: false,
+                processData: false
+            });
+        });
+    });
+
+    function showProgession(e) {
+        if (e.lengthComputable) {
+            $('progress#progress').attr({value: e.loaded, max: e.total});
+        }
+    }
 </script>
 </body>
 </html>

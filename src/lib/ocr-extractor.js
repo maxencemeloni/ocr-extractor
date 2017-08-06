@@ -77,21 +77,27 @@ class OCRExtractor {
     }
 
     ocrapiservice(next) {
-        log.info('[OCR][ocrapiservice] Result : ');
-        let settings = config.ocrapiservice;
-        settings.files = this.file;
-        httpClient(settings, (err, res, text) => {
-            if (err !== null) {
-                log.info('[OCR][ocrapiservice] Error :');
-                log.info(err);
-            } else {
-                text = text.trim();
-                log.info('[OCR][ocrapiservice] Success :');
-                log.info(text);
-            }
-            next(err, {text, err});
-        });
+        if (process.env.OS !== 'Windows_NT') {
+            log.info('[OCR][ocrapiservice] Result : ');
+            let settings = config.ocrapiservice;
+            settings.files = this.file;
+            httpClient(settings, (err, res, text) => {
+                if (err !== null) {
+                    log.info('[OCR][ocrapiservice] Error :');
+                    log.info(err);
+                } else {
+                    text = text.trim();
+                    log.info('[OCR][ocrapiservice] Success :');
+                    log.info(text);
+                }
+                next(err, {text, err});
+            });
+        } else {
+            log.info('[OCR][ocrapiservice] Skyped');
+            next(null, {});
+        }
     }
+
 }
 
 export default OCRExtractor;
