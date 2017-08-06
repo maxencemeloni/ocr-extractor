@@ -55,10 +55,10 @@
                 beforeSend: () => {
                 },
                 success: (result, msg) => {
-                    $('div#result').html(`<h2>${msg}</h2><pre>${JSON.stringify(result)}</pre>`);
+                    $('div#result').html(`<h2>${msg}</h2><pre>${toHtml(result)}</pre>`);
                 },
                 error: (jqXhr, msg, err) => {
-                    $('div#result').html(`<h2>${msg}</h2><pre>${JSON.stringify(err)}</pre>`);
+                    $('div#result').html(`<h2>${msg}</h2><pre>${err}</pre>`);
                     console.error(jqXhr);
                 },
                 data: formData,
@@ -73,6 +73,17 @@
         if (e.lengthComputable) {
             $('progress#progress').attr({value: e.loaded, max: e.total});
         }
+    }
+
+    function toHtml(result) {
+        let html = '';
+        let key;
+        let value;
+        for (key in result) {
+            value = result[key];
+            html += `<h3>${key}</h3><p>${JSON.stringify(value)}</p>`;
+        }
+        return html;
     }
 </script>
 </body>
