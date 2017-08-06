@@ -2,10 +2,11 @@ import fs from 'fs';
 import { generateRandomHash } from '../lib/util.js';
 
 export function writeFile(req, config, next) {
-    let base64Data = req.body.image.replace(/^data:image\/png;base64,/, "");
-    let fileName = `${generateRandomHash()}.png`;
+    //let base64Data = req.body.image.replace(/^data:image\/png;base64,/, "");
+	console.log(req);
+    let fileName = `${generateRandomHash()}.jpg`;
     let filePath = `${config.path}/${fileName}`;
-    fs.writeFile(filePath, base64Data, 'base64', function(err) {
+    fs.writeFile(filePath, req.files.image, 'binary', function(err) {
         next(err, filePath);
-    });
+    });	
 }

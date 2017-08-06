@@ -17,6 +17,7 @@ if (app.settings.env === 'development') {
     // require('expressjs-api-explorer')(app, express);
 } else if (app.settings.env === 'production') {
     // security
+	console.log('helmet is on');
     const helmet = require('helmet');
     app.use(helmet(config.helmet));
 }
@@ -26,6 +27,7 @@ mkdirsSync('../tmp');
 
 winston.info('*******************************************************');
 winston.info('************* STARTING OCR EXTRACTOR API **************');
+winston.info('******************** ' + app.settings.env.toUpperCase() + ' MODE **********************');
 winston.info('*******************************************************');
 
 app.server = http.createServer(app);
