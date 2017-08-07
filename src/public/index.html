@@ -1,6 +1,6 @@
 <html>
 <head>
-    <title>OCR extractor API</title>
+    <title>OCR extractor</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css"
           integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
@@ -10,27 +10,55 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js"
             integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn"
             crossorigin="anonymous"></script>
+    <style>
+        @media screen and (max-width:  1100px) {
+            .file {
+                margin-top: 20px;
+                text-align: center;
+            }
+            .send {
+                margin-top: 20px;
+                text-align: center;
+            }
+
+            input[type=file] {
+                width: 80%;
+            }
+            button {
+                width: 80%;
+                margin-top: 20px;
+            }
+            progress {
+                margin-top: 20px;
+                margin-left: 10%;
+                width: 80%;
+                height: 35px;
+            }
+        }
+
+    </style>
 </head>
 <body>
 <div style="margin:100px;">
     <div class="jumbotron container" style="padding:40px;">
-        <h1>OCR extractor API</h1>
+        <h1>OCR extractor</h1>
         <form method="post" action="" enctype="multipart/form-data" id="upload">
             <div class="row">
-                <div class="col-md-6">
-                    <label class="control-label">Select File</label>
+                <div class="col-md-6 file">
                     <input id="image" name="image" type="file" class="file">
                 </div>
-            </div>
-            <div class="row">
-                <div class="col-md-6">
+                <div class="col-md-6 send">
                     <button>Envoyer</button>
                 </div>
             </div>
         </form>
         <div class="row">
-            <div class="col-md-12" id="result">
+            <div class="col-md-12">
                 <progress id="progress" value="0" max="100"></progress>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12" id="result">
             </div>
         </div>
 
@@ -53,6 +81,7 @@
                     return myXhr;
                 },
                 beforeSend: () => {
+                    $('#result').html('');
                 },
                 success: (result, msg) => {
                     $('div#result').html(`<h2>${msg}</h2><pre>${toHtml(result)}</pre>`);
