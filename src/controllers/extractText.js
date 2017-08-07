@@ -16,7 +16,7 @@ controller.extract = (req, next) => {
     let fileName = `${generateRandomHash()}.jpg`;
     let filePath = `${__dirname}/tmp/${fileName}`;
     req.files.image.mv(filePath, (err, result) => {
-        let ocr = new OCRExtractor(`${__dirname}/tmp/${filePath}`);
+        let ocr = new OCRExtractor(filePath);
         ocr.extract(next);
     });
 //}
