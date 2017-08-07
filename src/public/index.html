@@ -84,7 +84,13 @@
                     $('#result').html('');
                 },
                 success: (result, msg) => {
-                    $('div#result').html(`<h2>${msg}</h2><pre>${toHtml(result)}</pre>`);
+                    var html = '';
+                    if (result.length > 1) {
+                        for(var i in result) {
+                            html += '<h3>'+i+'</h3><p>'+result[i].text+'</p>';
+                        }
+                    }
+                    $('div#result').html(html);
                 },
                 error: (jqXhr, msg, err) => {
                     $('div#result').html(`<h2>${msg}</h2><pre>${err}</pre>`);
