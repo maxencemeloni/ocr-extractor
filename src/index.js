@@ -61,6 +61,7 @@ initializeDb(db => {
     // internal middleware
     app.use(middleware({config, db}));
 
+
     require('expressjs-api-explorer')(app, express);
     // api router
     app.use('/api', api({config, db}));
@@ -69,7 +70,6 @@ initializeDb(db => {
     app.use('/', function(req, res) {
         res.sendFile(path.join(__dirname+'/public/index.html'));
     });
-
 
     app.server.listen(process.env.PORT || config.port, () => {
         winston.info(`************* Started on port ${app.server.address().port} *************`);

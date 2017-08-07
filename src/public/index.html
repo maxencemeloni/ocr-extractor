@@ -43,7 +43,7 @@
 
             let formData = new FormData($('form')[0]);
             $.ajax({
-                url: 'http://37.59.49.118:8080/api/extractText',
+                url: 'http://localhost:8080/api/extractText',
                 type: 'POST',
                 xhr: function() {
                     let myXhr = $.ajaxSettings.xhr();

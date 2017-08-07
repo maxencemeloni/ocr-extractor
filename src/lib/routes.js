@@ -1,6 +1,8 @@
 import log from 'winston';
 import extractText from '../controllers/extractText';
 
+let upload = null;
+
 export function routes(api, routesList) {
     log.info('------------------------');
     log.info('--- Loading routes : ---');
@@ -28,16 +30,16 @@ export function routes(api, routesList) {
                         res.status(200).json({"description": route.description, "args": args});
                     });
                 } else if (route.method === 'FILES') {
-
-                    api.post(`/${name}`, (req, res) => {
-                        extractText.extract(req, (err, result) => {
-                            if (err) {
-                                res.status(500).send(err);
-                            } else {
-                                res.status(200).send(result);
-                            }
-                        });
-                    });
+                    //let upload = multer({dest: `${__dirname}/../tmp`});
+                    //api.post(`/${name}`, upload.single('image'), (req, res) => {
+                    //    extractText.extract(req, (err, result) => {
+                    //        if (err) {
+                    //            res.status(500).send(err);
+                    //        } else {
+                    //            res.status(200).send(result);
+                    //        }
+                    //    });
+                    //});
                     /*
                     api.post(`/${name}`, (req, res) => {
 
