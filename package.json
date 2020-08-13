@@ -33,7 +33,7 @@
     "compression": "^1.5.2",
     "cors": "^2.7.1",
     "express": "^4.13.3",
-    "express-fileupload": "^0.1.4",
+    "express-fileupload": "^1.1.10",
     "fs": "0.0.1-security",
     "helmet": "^3.8.1",
     "md5": "^2.2.1",
